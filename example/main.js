@@ -231,14 +231,20 @@ const delimiters = [...KeyCodes.enter, KeyCodes.comma];
 const Tags = ReactTags.WithContext;
 const App = () => {
   const [tags, setTags] = React.useState([
-    { id: 'Thailand', text: 'Thailand' },
-    { id: 'India', text: 'India' },
-    { id: 'Vietnam', text: 'Vietnam' },
-    { id: 'Turkey', text: 'Turkey' },
+    { id: 'Thailand', text: 'Thailand', hasNotes: true, isProtected: false },
+    { id: 'India', text: 'India', hasNotes: true, isProtected: false },
+    { id: 'Vietnam', text: 'Vietnam', hasNotes: true, isProtected: true},
+    { id: 'Turkey', text: 'Turkey', hasNotes: false, isProtected: true},
   ]);
 
   const handleDelete = (i) => {
     setTags(tags.filter((tag, index) => index !== i));
+  };
+
+  const handleNotesClick = (i) => {
+    // setTags(tags.filter((tag, index) => index !== i));
+    alert("Notes Clicked!");
+    console.warn("NOTES CLICKED");
   };
 
   const onTagUpdate = (i, newTag) => {
@@ -280,6 +286,7 @@ const App = () => {
           suggestions={suggestions}
           delimiters={delimiters}
           handleDelete={handleDelete}
+          handleNotesClick={handleNotesClick}
           handleAddition={handleAddition}
           handleDrag={handleDrag}
           handleTagClick={handleTagClick}
@@ -289,6 +296,8 @@ const App = () => {
           clearAll
           onClearAll={onClearAll}
           maxTags={7}
+          hasNotesField='hasNotes'
+          isProtectedField='isProtected'
         />
       </div>
     </div>

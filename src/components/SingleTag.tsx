@@ -4,6 +4,7 @@ import ClassNames from 'classnames';
 import { canDrag, canDrop } from './utils';
 
 import RemoveComponent from './RemoveComponent';
+import NotesComponent from './NotesComponent';
 
 const ItemTypes = { TAG: 'tag' };
 
@@ -14,6 +15,8 @@ export interface Tag {
 }
 
 interface TagProps {
+  hasNotesField: string;
+  isProtectedField: string;
   labelField: string;
   onDelete: (
     event:
@@ -26,6 +29,11 @@ interface TagProps {
   onTagClicked: (
     event: React.MouseEvent<HTMLSpanElement> | React.TouchEvent<HTMLSpanElement>
   ) => void;
+  onNotesClicked: (
+    event:
+      | React.MouseEvent<HTMLSpanElement>
+      | React.KeyboardEvent<HTMLSpanElement>
+  ) => void;
   classNames: {
     tag: string;
     remove: string;
@@ -33,6 +41,8 @@ interface TagProps {
   readOnly: boolean;
   index: number;
   allowDragDrop: boolean;
+  // hasNotes: boolean;
+  useRemoveIcon: boolean;
 }
 
 const SingleTag = (props: TagProps) => {
@@ -65,6 +75,8 @@ const SingleTag = (props: TagProps) => {
   drag(drop(tagRef));
 
   const label = props.tag[props.labelField];
+  const hasNotes = props.tag[props.hasNotesField] as unknown as boolean;
+  const isProtected = props.tag[props.isProtectedField] as unknown as boolean;
   const { className = '' } = tag;
   /* istanbul ignore next */
   const opacity = isDragging ? 0 : 1;
@@ -78,6 +90,15 @@ const SingleTag = (props: TagProps) => {
       }}
       onClick={props.onTagClicked}
       onTouchStart={props.onTagClicked}>
+      {hasNotes?<NotesComponent
+        tag={props.tag}
+        className={classNames.remove}
+        notesComponent={props.removeComponent}
+        onClick={props.onNotesClicked}
+        readOnly={readOnly}
+        index={index}
+        useIcon={hasNotes}
+      />:null}
       {label}
       <RemoveComponent
         tag={props.tag}
@@ -86,6 +107,8 @@ const SingleTag = (props: TagProps) => {
         onRemove={props.onDelete}
         readOnly={readOnly}
         index={index}
+        useIcon={props.useRemoveIcon}
+        isProtected={isProtected}
       />
     </span>
   );
@@ -95,5 +118,6 @@ SingleTag.defaultProps = {
   labelField: 'text',
   readOnly: false,
   allowDragDrop: true,
+  hasNotes: false
 };
 export { SingleTag };

@@ -24,6 +24,7 @@ import {
   DEFAULT_PLACEHOLDER,
   DEFAULT_CLASSNAMES,
   DEFAULT_LABEL_FIELD,
+  DEFAULT_HAS_NOTES_FIELD,
   INPUT_FIELD_POSITIONS,
   ERRORS,
 } from './constants';
@@ -43,6 +44,8 @@ interface ReactTagsProps {
   /**
    * Array of suggestions to display in the dropdown.
    */
+  hasNotesField: string;
+  isProtectedField: string;
   suggestions: Array<Tag>;
   /**
    * Array of key codes that will trigger a tag addition.
@@ -73,6 +76,12 @@ interface ReactTagsProps {
    * Handler for tag deletion.
    */
   handleDelete: (
+    i: number,
+    event:
+      | React.MouseEvent<HTMLSpanElement>
+      | React.KeyboardEvent<HTMLSpanElement>
+  ) => void;
+  handleNotesClick: (
     i: number,
     event:
       | React.MouseEvent<HTMLSpanElement>
@@ -216,6 +225,10 @@ interface ReactTagsProps {
    * Handler for clearing all the tags.
    */
   onClearAll: () => void;
+
+  hasNotes: boolean;
+
+  useRemoveIcon: boolean;
 }
 
 interface ReactTagsState {
@@ -251,6 +264,10 @@ interface ReactTagsState {
    * Error message to display.
    */
   error: string;
+
+  hasNotes: boolean;
+
+  useRemoveIcon: boolean;
 }
 
 const ReactTags = (props: ReactTagsProps) => {
@@ -259,6 +276,8 @@ const ReactTags = (props: ReactTagsProps) => {
     autoFocus,
     readOnly,
     labelField,
+    hasNotesField,
+    isProtectedField,
 
     allowDeleteFromEmptyInput,
     allowAdditionFromPaste,
@@ -282,6 +301,8 @@ const ReactTags = (props: ReactTagsProps) => {
     maxLength,
     inputValue,
     clearAll,
+    hasNotes,
+    useRemoveIcon
   } = props;
 
   const [suggestions, setSuggestions] = useState(props.suggestions);
@@ -378,6 +399,16 @@ const ReactTags = (props: ReactTagsProps) => {
     setError('');
     props.handleDelete(index, event);
     updateAriaLiveStatus(index, currentTags);
+  };
+
+  const handleNotesClick = (index: number, event:
+    | React.MouseEvent<HTMLSpanElement>
+    | React.KeyboardEvent<HTMLSpanElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    props.handleNotesClick(index, event);
+    updateAriaLiveStatus(index, tags);
   };
 
   const updateAriaLiveStatus = (index: number, tags: Tag[]) => {
@@ -660,25 +691,29 @@ const ReactTags = (props: ReactTagsProps) => {
             </div>
           ) : (
             <SingleTag
-              index={index}
-              tag={tag}
-              labelField={labelField}
-              onDelete={(
-                event:
-                  | React.MouseEvent<HTMLSpanElement>
-                  | React.KeyboardEvent<HTMLSpanElement>
-              ) => handleDelete(index, event)}
-              moveTag={allowDragDrop ? moveTag : undefined}
-              removeComponent={removeComponent}
-              onTagClicked={(
-                event:
-                  | React.MouseEvent<HTMLSpanElement>
-                  | React.TouchEvent<HTMLSpanElement>
-              ) => handleTagClick(index, tag, event)}
-              readOnly={readOnly}
-              classNames={allClassNames}
-              allowDragDrop={allowDragDrop}
-            />
+                index={index}
+                tag={tag}
+                labelField={labelField}
+                onDelete={(
+                  event: React.MouseEvent<HTMLSpanElement> |
+                    React.KeyboardEvent<HTMLSpanElement>
+                ) => handleDelete(index, event)}
+                moveTag={allowDragDrop ? moveTag : undefined}
+                removeComponent={removeComponent}
+                onTagClicked={(
+                  event: React.MouseEvent<HTMLSpanElement> |
+                    React.TouchEvent<HTMLSpanElement>
+                ) => handleTagClick(index, tag, event)}
+                readOnly={readOnly}
+                classNames={allClassNames}
+                allowDragDrop={allowDragDrop}
+                hasNotesField={hasNotesField}
+                useRemoveIcon={useRemoveIcon}
+                isProtectedField={isProtectedField}
+                onNotesClicked={(
+                  event: React.MouseEvent<HTMLSpanElement> |
+                    React.KeyboardEvent<HTMLSpanElement>
+                ) => handleNotesClick(index, event)}/>
           )}
         </Fragment>
       );
@@ -780,6 +815,7 @@ const ReactTags = (props: ReactTagsProps) => {
 ReactTags.defaultProps = {
   placeholder: DEFAULT_PLACEHOLDER,
   labelField: DEFAULT_LABEL_FIELD,
+  hasNotesField: DEFAULT_HAS_NOTES_FIELD,
   suggestions: [],
   delimiters: [...KEYS.ENTER, KEYS.TAB],
   autofocus: true,

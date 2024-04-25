@@ -1,30 +1,25 @@
 import React from 'react';
 import { KEYS } from './constants';
 import { Tag } from './SingleTag';
-import CloseIcon from '../assets/close.svg';
-import LockIcon from '../assets/protected_close.svg';
+import StickyNote from '../assets/sticky_note.svg';
 
-const crossStr = String.fromCharCode(9747);
-
-export interface RemoveComponentProps {
-  onRemove: (
+export interface NotesComponentProps {
+  onClick: (
     event:
       | React.MouseEvent<HTMLButtonElement>
       | React.KeyboardEvent<HTMLButtonElement>
   ) => void;
   readOnly: boolean;
-  removeComponent?: React.ComponentType<any>;
+  notesComponent?: React.ComponentType<any>;
   className?: string;
   tag: Tag;
   index: number;
   useIcon: boolean;
-  isProtected: boolean;
 }
 
-const RemoveComponent = (props: RemoveComponentProps) => {
-  const { readOnly, removeComponent, onRemove, className, tag, index, useIcon, isProtected} = props;
+const NotesComponent = (props: NotesComponentProps) => {
+  const { readOnly, notesComponent, onClick, className, tag, index, useIcon } = props;
 
-  var className2 = className;
   const onKeydown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (KEYS.ENTER.includes(event.keyCode) || event.keyCode === KEYS.SPACE) {
       event.preventDefault();
@@ -32,7 +27,7 @@ const RemoveComponent = (props: RemoveComponentProps) => {
       return;
     }
     if (event.keyCode === KEYS.BACKSPACE) {
-      onRemove(event);
+      onClick(event);
     }
   };
 
@@ -40,16 +35,12 @@ const RemoveComponent = (props: RemoveComponentProps) => {
     return <span />;
   }
 
-  if (useIcon) {
-    className2 += '';
-  }
-
   const ariaLabel = `Tag at index ${index} with value ${tag.id} focussed. Press backspace to remove`;
-  if (removeComponent) {
-    const Component = removeComponent;
+  if (notesComponent) {
+    const Component = notesComponent;
     return (
       <Component
-        onRemove={onRemove}
+        onClick={onClick}
         onKeyDown={onKeydown}
         className={className}
         aria-label={ariaLabel}
@@ -61,15 +52,14 @@ const RemoveComponent = (props: RemoveComponentProps) => {
 
   return (
     <button
-      onClick={onRemove}
+      onClick={onClick}
       onKeyDown={onKeydown}
       className={className}
       type="button"
       aria-label={ariaLabel}>
-      {/* {crossStr} */}
-      {isProtected?<LockIcon/>:<CloseIcon/>}
+      <StickyNote />
     </button>
   );
 };
 
-export default RemoveComponent;
+export default NotesComponent;
