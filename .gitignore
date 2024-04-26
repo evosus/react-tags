@@ -1,4 +1,4 @@
-# node_modules
+node_modules
 npm-debug.log
 .idea
 .vscode
@@ -8,4 +8,3 @@ coverage
 example/public/bundle.*
 example/public/ReactTags.*
 example/.DS_Store
-node_modules
