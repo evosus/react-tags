@@ -4,7 +4,7 @@ npm-debug.log
 .vscode
 coverage
 # dist-modules
-dist
+# dist
 example/public/bundle.*
 example/public/ReactTags.*
 example/.DS_Store
