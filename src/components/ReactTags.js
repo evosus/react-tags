@@ -672,6 +672,8 @@ class ReactTags extends Component {
 
     const useHiddenTagsCount = (tagLimit > 0 && tags.length > tagLimit);
     const hiddenTagsCount = tags.length - tagLimit;
+    console.warn('tags.length', tags.length);
+    console.warn('tagLimit', tagLimit);
     console.warn('useHiddenTagsCount', useHiddenTagsCount);
     console.warn('hiddenTagsCount', hiddenTagsCount);
     const showAllButton = this.props.showShowAllButton?(
