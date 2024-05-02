@@ -613,7 +613,7 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
       // console.warn('tagLimit', tagLimit);
       console.warn('useHiddenTagsCount', useHiddenTagsCount);
       console.warn('hiddenTagsCount', this.props.hiddenTagsCount);
-      var showAllButton = this.props.showShowAllButton ? /*#__PURE__*/_react["default"].createElement("button", {
+      var showAllButton = this.props.showShowAllButton && useHiddenTagsCount ? /*#__PURE__*/_react["default"].createElement("button", {
         className: "workflow-button",
         onClick: this.handleShowAllButtonClick.bind(this)
       }, this.props.useShowAllButtonIcon ? /*#__PURE__*/_react["default"].createElement("img", {
