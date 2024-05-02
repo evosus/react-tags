@@ -672,6 +672,8 @@ class ReactTags extends Component {
 
     const useHiddenTagsCount = tagLimit > 0 & tags.length > tagLimit;
     const hiddenTagsCount = tags.length - tagLimit;
+    console.warn('useHiddenTagsCount', useHiddenTagsCount);
+    console.warn('hiddenTagsCount', hiddenTagsCount);
     const showAllButton = this.props.showShowAllButton?(
       <button className='workflow-button' onClick={this.handleShowAllButtonClick.bind(this)}>{this.props.useShowAllButtonIcon?<img src={ShowAllIcon}/>:this.props.showAllButtonText}{useHiddenTagsCount?` + ${hiddenTagsCount} more`:null}</button>
     ):null;
