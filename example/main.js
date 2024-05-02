@@ -272,6 +272,9 @@ const App = () => {
   const handleHistoryButtonClick = () => {
     alert('handleHistoryButtonClick');
   }
+  const handleShowAllButtonClick = () => {
+    alert('handleShowAllButtonClick');
+  }
 
   const onClearAll = () => {
     setTags([]);
@@ -296,6 +299,9 @@ const App = () => {
           showWorkflowButton={true}
           handleWorkflowButtonClick={handleWorkflowButtonClick}
           showHistoryButton={true}
+          showShowAllButton={true}
+          showAllButtonText={'SHOW ALL!'}
+          handleShowAllButtonClick={handleShowAllButtonClick}
           handleHistoryButtonClick={handleHistoryButtonClick}
           workflowButtonText={'WORKFLOWS'}
           inputFieldPosition="bottom"

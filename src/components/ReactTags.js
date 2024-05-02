@@ -11,6 +11,7 @@ import ClassNames from 'classnames';
 import Tag from './Tag';
 import HistoryIcon from '../assets/history.svg';
 import PlusIcon from '../assets/plus.svg';
+import ShowAllIcon from '../assets/show_all.svg';
 
 import { buildRegExpFromDelimiters } from './utils';
 
@@ -54,6 +55,7 @@ class ReactTags extends Component {
     handleNotesClick: PropTypes.func,
     handleWorkflowButtonClick: PropTypes.func,
     handleHistoryButtonClick: PropTypes.func,
+    handleShowAllButtonClick: PropTypes.func,
     workflowButtonText: PropTypes.string,
     useWorkflowButtonIcon: PropTypes.bool,
     historyButtonText: PropTypes.string,
@@ -63,6 +65,9 @@ class ReactTags extends Component {
     allowDragDrop: PropTypes.bool,
     showWorkflowButton: PropTypes.bool,
     showHistoryButton: PropTypes.bool,
+    showShowAllButton: PropTypes.bool,
+    useShowAllButtonIcon: PropTypes.bool,
+    showAllButtonText: PropTypes.string,
     hasNotesField: PropTypes.string,
     isProtectedField: PropTypes.string,
     handleInputChange: PropTypes.func,
@@ -108,6 +113,7 @@ class ReactTags extends Component {
     handleNotesClick: noop,
     handleWorkflowButtonClick: noop,
     handleHistoryButtonClick: noop,
+    handleShowAllButtonClick: noop,
     workflowButtonText: 'Workflow',
     useWorkflowButtonIcon: false,
     historyButtonText: 'History',
@@ -120,6 +126,8 @@ class ReactTags extends Component {
     allowDragDrop: true,
     showWorkflowButton: false,
     showHistoryButton: false,
+    useShowAllButtonIcon: false,
+    showAllButtonText: 'Show All',
     tags: [],
     inputProps: {},
     onTagUpdate: noop,
@@ -561,6 +569,13 @@ class ReactTags extends Component {
     }
   }
 
+  handleShowAllButtonClick() {
+    const { handleShowAllButtonClick } = this.props;
+    if (handleShowAllButtonClick) {
+      handleShowAllButtonClick();
+    }
+  }
+
   render() {
     const tagItems = this.getTagItems();
     const classNames = { ...DEFAULT_CLASSNAMES, ...this.props.classNames };
@@ -652,6 +667,10 @@ class ReactTags extends Component {
       <button className='workflow-button' onClick={this.handleHistoryButtonClick.bind(this)}>{this.props.useHistoryButtonIcon?<img src={HistoryIcon}/>:this.props.historyButtonText}</button>
     ):null;
 
+    const showAllButton = this.props.showShowAllButton?(
+      <button className='workflow-button' onClick={this.handleShowAllButtonClick.bind(this)}>{this.props.useShowAllButtonIcon?<img src={ShowAllIcon}/>:this.props.showAllButtonText}</button>
+    ):null;
+
     return (
       <div
         className={ClassNames(classNames.tags, 'react-tags-wrapper')}
@@ -674,6 +693,7 @@ class ReactTags extends Component {
         {position === INPUT_FIELD_POSITIONS.TOP && tagInput}
         <div className={classNames.selected}>
           {tagItems}
+          {showAllButton}
           {position === INPUT_FIELD_POSITIONS.INLINE && tagInput}
           {workflowButton}
           {historyButton}
