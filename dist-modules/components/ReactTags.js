@@ -607,7 +607,7 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
       }, this.props.useHistoryButtonIcon ? /*#__PURE__*/_react["default"].createElement("img", {
         src: _history["default"]
       }) : this.props.historyButtonText) : null;
-      var useHiddenTagsCount = tagLimit > 0 & tags.length > tagLimit;
+      var useHiddenTagsCount = tagLimit > 0 && tags.length > tagLimit;
       var hiddenTagsCount = tags.length - tagLimit;
       console.warn('useHiddenTagsCount', useHiddenTagsCount);
       console.warn('hiddenTagsCount', hiddenTagsCount);

@@ -670,7 +670,7 @@ class ReactTags extends Component {
       <button className='workflow-button' onClick={this.handleHistoryButtonClick.bind(this)}>{this.props.useHistoryButtonIcon?<img src={HistoryIcon}/>:this.props.historyButtonText}</button>
     ):null;
 
-    const useHiddenTagsCount = tagLimit > 0 & tags.length > tagLimit;
+    const useHiddenTagsCount = (tagLimit > 0 && tags.length > tagLimit);
     const hiddenTagsCount = tags.length - tagLimit;
     console.warn('useHiddenTagsCount', useHiddenTagsCount);
     console.warn('hiddenTagsCount', hiddenTagsCount);
