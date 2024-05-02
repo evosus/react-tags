@@ -84,7 +84,7 @@ class ReactTags extends Component {
     maxLength: PropTypes.number,
     inputValue: PropTypes.string,
     maxTags: PropTypes.number,
-    tagLimit: PropTypes.number,
+    hiddenTagsCount: PropTypes.number,
     tags: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -599,7 +599,7 @@ class ReactTags extends Component {
       inputProps,
       clearAll,
       tags,
-      tagLimit
+      hiddenTagsCount
     } = this.props;
 
     const position = !inline
@@ -670,14 +670,14 @@ class ReactTags extends Component {
       <button className='workflow-button' onClick={this.handleHistoryButtonClick.bind(this)}>{this.props.useHistoryButtonIcon?<img src={HistoryIcon}/>:this.props.historyButtonText}</button>
     ):null;
 
-    const useHiddenTagsCount = (tagLimit > 0 && tags.length > tagLimit);
-    const hiddenTagsCount = tags.length - tagLimit;
+    const useHiddenTagsCount = hiddenTagsCount > 0;
+    // const hiddenTagsCount = tags.length - tagLimit;
     console.warn('tags.length', tags.length);
-    console.warn('tagLimit', tagLimit);
+    // console.warn('tagLimit', tagLimit);
     console.warn('useHiddenTagsCount', useHiddenTagsCount);
-    console.warn('hiddenTagsCount', hiddenTagsCount);
+    console.warn('hiddenTagsCount', this.props.hiddenTagsCount);
     const showAllButton = this.props.showShowAllButton?(
-      <button className='workflow-button' onClick={this.handleShowAllButtonClick.bind(this)}>{this.props.useShowAllButtonIcon?<img src={ShowAllIcon}/>:this.props.showAllButtonText}{useHiddenTagsCount?` + ${hiddenTagsCount} more`:null}</button>
+      <button className='workflow-button' onClick={this.handleShowAllButtonClick.bind(this)}>{this.props.useShowAllButtonIcon?<img src={ShowAllIcon}/>:this.props.showAllButtonText}{useHiddenTagsCount?` + ${this.props.hiddenTagsCount} more`:null}</button>
     ):null;
 
     return (
