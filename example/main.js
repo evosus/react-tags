@@ -306,11 +306,13 @@ const App = () => {
           workflowButtonText={'WORKFLOWS'}
           inputFieldPosition="bottom"
           useWorkflowButtonIcon={true}
+          maxTags={2}
           autocomplete
           editable
           clearAll
           onClearAll={onClearAll}
-          maxTags={7}
+          tagLimit={2}
+          // maxTags={7}
         />
       </div>
     </div>

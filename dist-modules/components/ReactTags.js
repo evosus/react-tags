@@ -544,7 +544,8 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
         inputValue = _this$props7.inputValue,
         inputProps = _this$props7.inputProps,
         clearAll = _this$props7.clearAll,
-        tags = _this$props7.tags;
+        tags = _this$props7.tags,
+        tagLimit = _this$props7.tagLimit;
       var position = !inline ? _constants.INPUT_FIELD_POSITIONS.BOTTOM : inputFieldPosition;
       var tagInput = !this.props.readOnly ? /*#__PURE__*/_react["default"].createElement("div", {
         className: classNames.tagInput
@@ -606,12 +607,14 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
       }, this.props.useHistoryButtonIcon ? /*#__PURE__*/_react["default"].createElement("img", {
         src: _history["default"]
       }) : this.props.historyButtonText) : null;
+      var useHiddenTagsCount = tagLimit > 0 & tags.length > tagLimit;
+      var hiddenTagsCount = tags.length - tagLimit;
       var showAllButton = this.props.showShowAllButton ? /*#__PURE__*/_react["default"].createElement("button", {
         className: "workflow-button",
         onClick: this.handleShowAllButtonClick.bind(this)
       }, this.props.useShowAllButtonIcon ? /*#__PURE__*/_react["default"].createElement("img", {
         src: _show_all["default"]
-      }) : this.props.showAllButtonText) : null;
+      }) : this.props.showAllButtonText, useHiddenTagsCount ? " + ".concat(hiddenTagsCount, " more") : null) : null;
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: (0, _classnames["default"])(classNames.tags, 'react-tags-wrapper'),
         ref: this.reactTagsRef
@@ -670,7 +673,7 @@ _defineProperty(ReactTags, "propTypes", (_defineProperty2 = {
   showShowAllButton: _propTypes["default"].bool,
   useShowAllButtonIcon: _propTypes["default"].bool,
   showAllButtonText: _propTypes["default"].string
-}, _defineProperty(_defineProperty2, "hasNotesField", _propTypes["default"].string), _defineProperty(_defineProperty2, "isProtectedField", _propTypes["default"].string), _defineProperty(_defineProperty2, "handleInputChange", _propTypes["default"].func), _defineProperty(_defineProperty2, "handleInputFocus", _propTypes["default"].func), _defineProperty(_defineProperty2, "handleInputBlur", _propTypes["default"].func), _defineProperty(_defineProperty2, "minQueryLength", _propTypes["default"].number), _defineProperty(_defineProperty2, "shouldRenderSuggestions", _propTypes["default"].func), _defineProperty(_defineProperty2, "removeComponent", _propTypes["default"].func), _defineProperty(_defineProperty2, "autocomplete", _propTypes["default"].oneOfType([_propTypes["default"].bool, _propTypes["default"].number])), _defineProperty(_defineProperty2, "readOnly", _propTypes["default"].bool), _defineProperty(_defineProperty2, "classNames", _propTypes["default"].object), _defineProperty(_defineProperty2, "name", _propTypes["default"].string), _defineProperty(_defineProperty2, "id", _propTypes["default"].string), _defineProperty(_defineProperty2, "maxLength", _propTypes["default"].number), _defineProperty(_defineProperty2, "inputValue", _propTypes["default"].string), _defineProperty(_defineProperty2, "maxTags", _propTypes["default"].number), _defineProperty(_defineProperty2, "tags", _propTypes["default"].arrayOf(_propTypes["default"].shape({
+}, _defineProperty(_defineProperty2, "hasNotesField", _propTypes["default"].string), _defineProperty(_defineProperty2, "isProtectedField", _propTypes["default"].string), _defineProperty(_defineProperty2, "handleInputChange", _propTypes["default"].func), _defineProperty(_defineProperty2, "handleInputFocus", _propTypes["default"].func), _defineProperty(_defineProperty2, "handleInputBlur", _propTypes["default"].func), _defineProperty(_defineProperty2, "minQueryLength", _propTypes["default"].number), _defineProperty(_defineProperty2, "shouldRenderSuggestions", _propTypes["default"].func), _defineProperty(_defineProperty2, "removeComponent", _propTypes["default"].func), _defineProperty(_defineProperty2, "autocomplete", _propTypes["default"].oneOfType([_propTypes["default"].bool, _propTypes["default"].number])), _defineProperty(_defineProperty2, "readOnly", _propTypes["default"].bool), _defineProperty(_defineProperty2, "classNames", _propTypes["default"].object), _defineProperty(_defineProperty2, "name", _propTypes["default"].string), _defineProperty(_defineProperty2, "id", _propTypes["default"].string), _defineProperty(_defineProperty2, "maxLength", _propTypes["default"].number), _defineProperty(_defineProperty2, "inputValue", _propTypes["default"].string), _defineProperty(_defineProperty2, "maxTags", _propTypes["default"].number), _defineProperty(_defineProperty2, "tagLimit", _propTypes["default"].number), _defineProperty(_defineProperty2, "tags", _propTypes["default"].arrayOf(_propTypes["default"].shape({
   id: _propTypes["default"].string.isRequired,
   className: _propTypes["default"].string
 }))), _defineProperty(_defineProperty2, "allowUnique", _propTypes["default"].bool), _defineProperty(_defineProperty2, "renderSuggestion", _propTypes["default"].func), _defineProperty(_defineProperty2, "inputProps", _propTypes["default"].object), _defineProperty(_defineProperty2, "editable", _propTypes["default"].bool), _defineProperty(_defineProperty2, "clearAll", _propTypes["default"].bool), _defineProperty(_defineProperty2, "onClearAll", _propTypes["default"].func), _defineProperty2));
@@ -710,7 +713,8 @@ _defineProperty(ReactTags, "defaultProps", {
   onTagUpdate: _noop["default"],
   editable: false,
   clearAll: false,
-  handleClearAll: _noop["default"]
+  handleClearAll: _noop["default"],
+  tagLimt: 0
 });
 var WithContext = exports.WithContext = function WithContext(_ref2) {
   var props = _extends({}, (_objectDestructuringEmpty(_ref2), _ref2));
