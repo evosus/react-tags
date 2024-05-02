@@ -326,7 +326,7 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
       //     this.tagInput.focus();
       //   });
       // }
-      // console.warn('ON NOTES CLICK');
+      // console.debug('ON NOTES CLICK');
       if (handleNotesClick) {
         handleNotesClick(i, e);
       }
@@ -609,10 +609,10 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
       }) : this.props.historyButtonText) : null;
       var useHiddenTagsCount = hiddenTagsCount > 0;
       // const hiddenTagsCount = tags.length - tagLimit;
-      console.warn('tags.length', tags.length);
-      // console.warn('tagLimit', tagLimit);
-      console.warn('useHiddenTagsCount', useHiddenTagsCount);
-      console.warn('hiddenTagsCount', this.props.hiddenTagsCount);
+      console.debug('tags.length', tags.length);
+      // console.debug('tagLimit', tagLimit);
+      console.debug('useHiddenTagsCount', useHiddenTagsCount);
+      console.debug('hiddenTagsCount', this.props.hiddenTagsCount);
       var showAllButton = this.props.showShowAllButton && useHiddenTagsCount ? /*#__PURE__*/_react["default"].createElement("button", {
         className: "workflow-button",
         onClick: this.handleShowAllButtonClick.bind(this)

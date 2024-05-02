@@ -280,7 +280,7 @@ class ReactTags extends Component {
     //     this.tagInput.focus();
     //   });
     // }
-    // console.warn('ON NOTES CLICK');
+    // console.debug('ON NOTES CLICK');
     if (handleNotesClick) {
       handleNotesClick(i, e);
     }
@@ -672,10 +672,10 @@ class ReactTags extends Component {
 
     const useHiddenTagsCount = hiddenTagsCount > 0;
     // const hiddenTagsCount = tags.length - tagLimit;
-    console.warn('tags.length', tags.length);
-    // console.warn('tagLimit', tagLimit);
-    console.warn('useHiddenTagsCount', useHiddenTagsCount);
-    console.warn('hiddenTagsCount', this.props.hiddenTagsCount);
+    console.debug('tags.length', tags.length);
+    // console.debug('tagLimit', tagLimit);
+    console.debug('useHiddenTagsCount', useHiddenTagsCount);
+    console.debug('hiddenTagsCount', this.props.hiddenTagsCount);
     const showAllButton = this.props.showShowAllButton && useHiddenTagsCount?(
       <button className='workflow-button' onClick={this.handleShowAllButtonClick.bind(this)}>{this.props.useShowAllButtonIcon?<img src={ShowAllIcon}/>:this.props.showAllButtonText}{useHiddenTagsCount?` + ${this.props.hiddenTagsCount} more`:null}</button>
     ):null;
