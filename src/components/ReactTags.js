@@ -537,6 +537,7 @@ class ReactTags extends Component {
             </div>
           ) : (
             <Tag
+              key={crypto.randomUUID()}
               index={index}
               tag={tag}
               labelField={labelField}

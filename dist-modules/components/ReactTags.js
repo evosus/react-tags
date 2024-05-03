@@ -192,6 +192,7 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
           onPaste: _this.handlePaste,
           "data-testid": "tag-edit"
         })) : /*#__PURE__*/_react["default"].createElement(_Tag["default"], {
+          key: crypto.randomUUID(),
           index: index,
           tag: tag,
           labelField: labelField,
