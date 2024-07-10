@@ -373,23 +373,37 @@ class ReactTags extends Component {
     // up arrow
     if (e.keyCode === KEYS.UP_ARROW) {
       e.preventDefault();
-      this.setState({
-        selectedIndex:
-          selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1,
-        selectionMode: true,
-      });
+      if (selectedIndex === 0) {
+        this.setState({
+          selectedIndex: -1,
+          selectionMode: false,
+        });
+      } else {
+        this.setState({
+          selectedIndex:
+            selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1,
+          selectionMode: true,
+        });
+      }
     }
 
     // down arrow
     if (e.keyCode === KEYS.DOWN_ARROW) {
       e.preventDefault();
-      this.setState({
-        selectedIndex:
-          suggestions.length === 0
-            ? -1
-            : (selectedIndex + 1) % suggestions.length,
-        selectionMode: true,
-      });
+      if (selectedIndex === suggestions.length - 1) {
+        this.setState({
+          selectedIndex: -1,
+          selectionMode: false,
+        });
+      } else {
+        this.setState({
+          selectedIndex:
+            suggestions.length === 0
+              ? -1
+              : (selectedIndex + 1) % suggestions.length,
+          selectionMode: true,
+        });
+      }
     }
   }
 

@@ -296,7 +296,7 @@ const App = () => {
           handleTagClick={handleTagClick}
           handleNotesClick={handleNotesClick}
           onTagUpdate={onTagUpdate}
-          showWorkflowButton={true}
+          // showWorkflowButton={true}
           handleWorkflowButtonClick={handleWorkflowButtonClick}
           showHistoryButton={true}
           showShowAllButton={true}
@@ -307,8 +307,8 @@ const App = () => {
           inputFieldPosition="bottom"
           useWorkflowButtonIcon={true}
           maxTags={2}
-          autocomplete
-          editable
+          // autocomplete
+          // editable
           clearAll
           onClearAll={onClearAll}
           tagLimit={2}
