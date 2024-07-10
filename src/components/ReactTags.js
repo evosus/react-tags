@@ -9,6 +9,9 @@ import Suggestions from './Suggestions';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import Tag from './Tag';
+import HistoryIcon from '../assets/history.svg';
+import PlusIcon from '../assets/plus.svg';
+import ShowAllIcon from '../assets/show_all.svg';
 
 import { buildRegExpFromDelimiters } from './utils';
 
@@ -18,6 +21,8 @@ import {
   DEFAULT_PLACEHOLDER,
   DEFAULT_CLASSNAMES,
   DEFAULT_LABEL_FIELD,
+  DEFAULT_HAS_NOTES_FIELD,
+  DEFAULT_IS_PROTECTED_FIELD,
   INPUT_FIELD_POSITIONS,
   ERRORS,
 } from './constants';
@@ -26,6 +31,8 @@ class ReactTags extends Component {
   static propTypes = {
     placeholder: PropTypes.string,
     labelField: PropTypes.string,
+    hasNotesField: PropTypes.string,
+    isProtectedField: PropTypes.string,
     suggestions: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -45,9 +52,24 @@ class ReactTags extends Component {
     handleDrag: PropTypes.func,
     handleFilterSuggestions: PropTypes.func,
     handleTagClick: PropTypes.func,
+    handleNotesClick: PropTypes.func,
+    handleWorkflowButtonClick: PropTypes.func,
+    handleHistoryButtonClick: PropTypes.func,
+    handleShowAllButtonClick: PropTypes.func,
+    workflowButtonText: PropTypes.string,
+    useWorkflowButtonIcon: PropTypes.bool,
+    historyButtonText: PropTypes.string,
+    useHistoryButtonIcon: PropTypes.bool,
     allowDeleteFromEmptyInput: PropTypes.bool,
     allowAdditionFromPaste: PropTypes.bool,
     allowDragDrop: PropTypes.bool,
+    showWorkflowButton: PropTypes.bool,
+    showHistoryButton: PropTypes.bool,
+    showShowAllButton: PropTypes.bool,
+    useShowAllButtonIcon: PropTypes.bool,
+    showAllButtonText: PropTypes.string,
+    hasNotesField: PropTypes.string,
+    isProtectedField: PropTypes.string,
     handleInputChange: PropTypes.func,
     handleInputFocus: PropTypes.func,
     handleInputBlur: PropTypes.func,
@@ -62,6 +84,7 @@ class ReactTags extends Component {
     maxLength: PropTypes.number,
     inputValue: PropTypes.string,
     maxTags: PropTypes.number,
+    hiddenTagsCount: PropTypes.number,
     tags: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
@@ -79,6 +102,8 @@ class ReactTags extends Component {
   static defaultProps = {
     placeholder: DEFAULT_PLACEHOLDER,
     labelField: DEFAULT_LABEL_FIELD,
+    hasNotesField: DEFAULT_HAS_NOTES_FIELD,
+    isProtectedField: DEFAULT_IS_PROTECTED_FIELD,
     suggestions: [],
     delimiters: [...KEYS.ENTER, KEYS.TAB],
     autofocus: true,
@@ -86,18 +111,31 @@ class ReactTags extends Component {
     inputFieldPosition: INPUT_FIELD_POSITIONS.INLINE,
     handleDelete: noop,
     handleAddition: noop,
+    handleNotesClick: noop,
+    handleWorkflowButtonClick: noop,
+    handleHistoryButtonClick: noop,
+    handleShowAllButtonClick: noop,
+    workflowButtonText: 'Workflow',
+    useWorkflowButtonIcon: false,
+    historyButtonText: 'History',
+    useHistoryButtonIcon: false,
     allowDeleteFromEmptyInput: true,
     allowAdditionFromPaste: true,
     autocomplete: false,
     readOnly: false,
     allowUnique: true,
     allowDragDrop: true,
+    showWorkflowButton: false,
+    showHistoryButton: false,
+    useShowAllButtonIcon: false,
+    showAllButtonText: 'Show All',
     tags: [],
     inputProps: {},
     onTagUpdate: noop,
     editable: false,
     clearAll: false,
     handleClearAll: noop,
+    tagLimt: 0
   };
 
   constructor(props) {
@@ -235,6 +273,19 @@ class ReactTags extends Component {
     }
   }
 
+  handleNotesClick(i, tag, e) {
+    const { editable, handleNotesClick, labelField } = this.props;
+    // if (editable) {
+    //   this.setState({ currentEditIndex: i, query: tag[labelField] }, () => {
+    //     this.tagInput.focus();
+    //   });
+    // }
+    // console.debug('ON NOTES CLICK');
+    if (handleNotesClick) {
+      handleNotesClick(i, e);
+    }
+  }
+
   handleChange(e) {
     if (this.props.handleInputChange) {
       this.props.handleInputChange(e.target.value, e);
@@ -322,23 +373,37 @@ class ReactTags extends Component {
     // up arrow
     if (e.keyCode === KEYS.UP_ARROW) {
       e.preventDefault();
-      this.setState({
-        selectedIndex:
-          selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1,
-        selectionMode: true,
-      });
+      if (selectedIndex === 0) {
+        this.setState({
+          selectedIndex: -1,
+          selectionMode: false,
+        });
+      } else {
+        this.setState({
+          selectedIndex:
+            selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1,
+          selectionMode: true,
+        });
+      }
     }
 
     // down arrow
     if (e.keyCode === KEYS.DOWN_ARROW) {
       e.preventDefault();
-      this.setState({
-        selectedIndex:
-          suggestions.length === 0
-            ? -1
-            : (selectedIndex + 1) % suggestions.length,
-        selectionMode: true,
-      });
+      if (selectedIndex === suggestions.length - 1) {
+        this.setState({
+          selectedIndex: -1,
+          selectionMode: false,
+        });
+      } else {
+        this.setState({
+          selectedIndex:
+            suggestions.length === 0
+              ? -1
+              : (selectedIndex + 1) % suggestions.length,
+          selectionMode: true,
+        });
+      }
     }
   }
 
@@ -459,7 +524,7 @@ class ReactTags extends Component {
   }
 
   getTagItems = () => {
-    const { tags, labelField, removeComponent, readOnly, allowDragDrop } =
+    const { tags, labelField, removeComponent, readOnly, allowDragDrop, hasNotesField, isProtectedField } =
       this.props;
     const classNames = { ...DEFAULT_CLASSNAMES, ...this.props.classNames };
 
@@ -486,6 +551,7 @@ class ReactTags extends Component {
             </div>
           ) : (
             <Tag
+              key={crypto.randomUUID()}
               index={index}
               tag={tag}
               labelField={labelField}
@@ -496,12 +562,36 @@ class ReactTags extends Component {
               readOnly={readOnly}
               classNames={classNames}
               allowDragDrop={allowDragDrop}
+              hasNotesField={hasNotesField}
+              isProtectedField={isProtectedField}
+              onNotesClicked={this.handleNotesClick.bind(this, index, tag)}
             />
           )}
         </React.Fragment>
       );
     });
   };
+
+  handleWorkflowButtonClick() {
+    const { handleWorkflowButtonClick } = this.props;
+    if (handleWorkflowButtonClick) {
+      handleWorkflowButtonClick();
+    }
+  }
+
+  handleHistoryButtonClick() {
+    const { handleHistoryButtonClick } = this.props;
+    if (handleHistoryButtonClick) {
+      handleHistoryButtonClick();
+    }
+  }
+
+  handleShowAllButtonClick() {
+    const { handleShowAllButtonClick } = this.props;
+    if (handleShowAllButtonClick) {
+      handleShowAllButtonClick();
+    }
+  }
 
   render() {
     const tagItems = this.getTagItems();
@@ -524,6 +614,7 @@ class ReactTags extends Component {
       inputProps,
       clearAll,
       tags,
+      hiddenTagsCount
     } = this.props;
 
     const position = !inline
@@ -586,6 +677,24 @@ class ReactTags extends Component {
       </div>
     ) : null;
 
+    const workflowButton = this.props.showWorkflowButton?(
+      <button className='workflow-button' onClick={this.handleWorkflowButtonClick.bind(this)}>{this.props.useWorkflowButtonIcon?<img src={PlusIcon}/>:this.props.workflowButtonText}</button>
+    ):null;
+
+    const historyButton = this.props.showHistoryButton?(
+      <button className='workflow-button' onClick={this.handleHistoryButtonClick.bind(this)}>{this.props.useHistoryButtonIcon?<img src={HistoryIcon}/>:this.props.historyButtonText}</button>
+    ):null;
+
+    const useHiddenTagsCount = hiddenTagsCount > 0;
+    // const hiddenTagsCount = tags.length - tagLimit;
+    console.debug('tags.length', tags.length);
+    // console.debug('tagLimit', tagLimit);
+    console.debug('useHiddenTagsCount', useHiddenTagsCount);
+    console.debug('hiddenTagsCount', this.props.hiddenTagsCount);
+    const showAllButton = this.props.showShowAllButton && useHiddenTagsCount?(
+      <button className='workflow-button' onClick={this.handleShowAllButtonClick.bind(this)}>{this.props.useShowAllButtonIcon?<img src={ShowAllIcon}/>:this.props.showAllButtonText}{useHiddenTagsCount?` + ${this.props.hiddenTagsCount} more`:null}</button>
+    ):null;
+
     return (
       <div
         className={ClassNames(classNames.tags, 'react-tags-wrapper')}
@@ -608,7 +717,10 @@ class ReactTags extends Component {
         {position === INPUT_FIELD_POSITIONS.TOP && tagInput}
         <div className={classNames.selected}>
           {tagItems}
+          {showAllButton}
           {position === INPUT_FIELD_POSITIONS.INLINE && tagInput}
+          {workflowButton}
+          {historyButton}
         </div>
         {position === INPUT_FIELD_POSITIONS.BOTTOM && tagInput}
       </div>

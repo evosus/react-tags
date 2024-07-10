@@ -59,6 +59,10 @@ const config = {
         // https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free
         sideEffects: true,
       },
+      {
+        test: /\.(png|jp(e*)g|svg|gif)$/,
+        type: "asset/resource",
+      },
     ],
   },
 };

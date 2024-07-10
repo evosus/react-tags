@@ -36,6 +36,10 @@ const config = {
         ],
         exclude: /node_modules/,
       },
+      {
+        test: /\.(png|jp(e*)g|svg|gif)$/,
+        type: "asset/resource",
+      },
     ],
   },
   optimization: {
