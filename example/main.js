@@ -222,11 +222,11 @@ const suggestions = COUNTRIES.map((country) => {
 });
 
 const KeyCodes = {
-  comma: 188,
+  // comma: 188,
   enter: [10, 13],
 };
 
-const delimiters = [...KeyCodes.enter, KeyCodes.comma];
+const delimiters = [...KeyCodes.enter];
 
 const Tags = ReactTags.WithContext;
 const App = () => {
@@ -269,6 +269,7 @@ const App = () => {
 
   const handleTagClick = (index) => {
     console.log('The tag at index ' + index + ' was clicked');
+    alert('The tag at index ' + index + ' was clicked');
   };
 
   const onClearAll = () => {
@@ -292,7 +293,6 @@ const App = () => {
           handleTagClick={handleTagClick}
           onTagUpdate={onTagUpdate}
           inputFieldPosition="bottom"
-          editable
           clearAll
           onClearAll={onClearAll}
           maxTags={7}

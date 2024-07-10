@@ -302,7 +302,7 @@ const ReactTags = (props: ReactTagsProps) => {
     inputValue,
     clearAll,
     hasNotes,
-    useRemoveIcon
+    useRemoveIcon,
   } = props;
 
   const [suggestions, setSuggestions] = useState(props.suggestions);
@@ -401,9 +401,11 @@ const ReactTags = (props: ReactTagsProps) => {
     updateAriaLiveStatus(index, currentTags);
   };
 
-  const handleNotesClick = (index: number, event:
-    | React.MouseEvent<HTMLSpanElement>
-    | React.KeyboardEvent<HTMLSpanElement>
+  const handleNotesClick = (
+    index: number,
+    event:
+      | React.MouseEvent<HTMLSpanElement>
+      | React.KeyboardEvent<HTMLSpanElement>
   ) => {
     event.preventDefault();
     event.stopPropagation();
@@ -537,19 +539,29 @@ const ReactTags = (props: ReactTagsProps) => {
     // up arrow
     if (event.keyCode === KEYS.UP_ARROW) {
       event.preventDefault();
-      setSelectedIndex(
-        selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1
-      );
-      setSelectionMode(true);
+      if (selectedIndex === 0) {
+        setSelectedIndex(-1);
+        setSelectionMode(false);
+      } else {
+        setSelectedIndex(
+          selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1
+        );
+        setSelectionMode(true);
+      }
     }
 
     // down arrow
     if (event.keyCode === KEYS.DOWN_ARROW) {
       event.preventDefault();
-      setSelectionMode(true);
-      suggestions.length === 0
-        ? setSelectedIndex(-1)
-        : setSelectedIndex((selectedIndex + 1) % suggestions.length);
+      if (selectedIndex === suggestions.length - 1) {
+        setSelectedIndex(-1);
+        setSelectionMode(false);
+      } else {
+        setSelectionMode(true);
+        suggestions.length === 0
+          ? setSelectedIndex(-1)
+          : setSelectedIndex((selectedIndex + 1) % suggestions.length);
+      }
     }
   };
 
@@ -691,29 +703,33 @@ const ReactTags = (props: ReactTagsProps) => {
             </div>
           ) : (
             <SingleTag
-                index={index}
-                tag={tag}
-                labelField={labelField}
-                onDelete={(
-                  event: React.MouseEvent<HTMLSpanElement> |
-                    React.KeyboardEvent<HTMLSpanElement>
-                ) => handleDelete(index, event)}
-                moveTag={allowDragDrop ? moveTag : undefined}
-                removeComponent={removeComponent}
-                onTagClicked={(
-                  event: React.MouseEvent<HTMLSpanElement> |
-                    React.TouchEvent<HTMLSpanElement>
-                ) => handleTagClick(index, tag, event)}
-                readOnly={readOnly}
-                classNames={allClassNames}
-                allowDragDrop={allowDragDrop}
-                hasNotesField={hasNotesField}
-                useRemoveIcon={useRemoveIcon}
-                isProtectedField={isProtectedField}
-                onNotesClicked={(
-                  event: React.MouseEvent<HTMLSpanElement> |
-                    React.KeyboardEvent<HTMLSpanElement>
-                ) => handleNotesClick(index, event)}/>
+              index={index}
+              tag={tag}
+              labelField={labelField}
+              onDelete={(
+                event:
+                  | React.MouseEvent<HTMLSpanElement>
+                  | React.KeyboardEvent<HTMLSpanElement>
+              ) => handleDelete(index, event)}
+              moveTag={allowDragDrop ? moveTag : undefined}
+              removeComponent={removeComponent}
+              onTagClicked={(
+                event:
+                  | React.MouseEvent<HTMLSpanElement>
+                  | React.TouchEvent<HTMLSpanElement>
+              ) => handleTagClick(index, tag, event)}
+              readOnly={readOnly}
+              classNames={allClassNames}
+              allowDragDrop={allowDragDrop}
+              hasNotesField={hasNotesField}
+              useRemoveIcon={useRemoveIcon}
+              isProtectedField={isProtectedField}
+              onNotesClicked={(
+                event:
+                  | React.MouseEvent<HTMLSpanElement>
+                  | React.KeyboardEvent<HTMLSpanElement>
+              ) => handleNotesClick(index, event)}
+            />
           )}
         </Fragment>
       );
