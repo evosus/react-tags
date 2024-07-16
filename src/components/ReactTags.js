@@ -12,6 +12,7 @@ import Tag from './Tag';
 import HistoryIcon from '../assets/history.svg';
 import PlusIcon from '../assets/plus.svg';
 import ShowAllIcon from '../assets/show_all.svg';
+import { v4 as uuidv4 } from 'uuid';
 
 import { buildRegExpFromDelimiters } from './utils';
 
@@ -551,7 +552,7 @@ class ReactTags extends Component {
             </div>
           ) : (
             <Tag
-              key={crypto.randomUUID()}
+              key={uuidv4()}
               index={index}
               tag={tag}
               labelField={labelField}
