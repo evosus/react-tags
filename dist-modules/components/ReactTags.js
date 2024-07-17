@@ -24,6 +24,7 @@ var _Tag = _interopRequireDefault(require("./Tag"));
 var _history = _interopRequireDefault(require("../assets/history.svg"));
 var _plus = _interopRequireDefault(require("../assets/plus.svg"));
 var _show_all = _interopRequireDefault(require("../assets/show_all.svg"));
+var _uuid = require("uuid");
 var _utils = require("./utils");
 var _constants = require("./constants");
 var _defineProperty2;
@@ -192,7 +193,7 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
           onPaste: _this.handlePaste,
           "data-testid": "tag-edit"
         })) : /*#__PURE__*/_react["default"].createElement(_Tag["default"], {
-          key: crypto.randomUUID(),
+          key: (0, _uuid.v4)(),
           index: index,
           tag: tag,
           labelField: labelField,
@@ -413,19 +414,33 @@ var ReactTags = exports.WithOutContext = /*#__PURE__*/function (_Component) {
       // up arrow
       if (e.keyCode === _constants.KEYS.UP_ARROW) {
         e.preventDefault();
-        this.setState({
-          selectedIndex: selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1,
-          selectionMode: true
-        });
+        if (selectedIndex === 0) {
+          this.setState({
+            selectedIndex: -1,
+            selectionMode: false
+          });
+        } else {
+          this.setState({
+            selectedIndex: selectedIndex <= 0 ? suggestions.length - 1 : selectedIndex - 1,
+            selectionMode: true
+          });
+        }
       }
 
       // down arrow
       if (e.keyCode === _constants.KEYS.DOWN_ARROW) {
         e.preventDefault();
-        this.setState({
-          selectedIndex: suggestions.length === 0 ? -1 : (selectedIndex + 1) % suggestions.length,
-          selectionMode: true
-        });
+        if (selectedIndex === suggestions.length - 1) {
+          this.setState({
+            selectedIndex: -1,
+            selectionMode: false
+          });
+        } else {
+          this.setState({
+            selectedIndex: suggestions.length === 0 ? -1 : (selectedIndex + 1) % suggestions.length,
+            selectionMode: true
+          });
+        }
       }
     }
   }, {
