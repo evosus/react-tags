@@ -47,7 +47,7 @@ const RemoveComponent = (props) => {
       className={className}
       type="button"
       aria-label={ariaLabel}>
-      {useIcon?(isProtected?<img src={LockIcon}/>:<img src={CloseIcon}/>):crossStr}
+      {useIcon?(isProtected?<img src={LockIcon} className='ev-protected-close-icon'/>:<img src={CloseIcon} className='ev-close-icon'/>):crossStr}
     </button>
   );
 };
