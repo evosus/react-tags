@@ -304,7 +304,7 @@ const App = () => {
           handleShowAllButtonClick={handleShowAllButtonClick}
           handleHistoryButtonClick={handleHistoryButtonClick}
           workflowButtonText={'WORKFLOWS'}
-          inputFieldPosition="bottom"
+          inputFieldPosition="top"
           useWorkflowButtonIcon={true}
           maxTags={2}
           // autocomplete
